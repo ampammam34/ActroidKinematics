@@ -1,0 +1,17 @@
+2014-10-20 11:22:47,611 manager INFO 1.1.0
+2014-10-20 11:22:47,611 manager INFO Copyright (C) 2003-2010
+2014-10-20 11:22:47,611 manager INFO   Noriaki Ando
+2014-10-20 11:22:47,611 manager INFO   Intelligent Systems Research Institute, AIST
+2014-10-20 11:22:47,611 manager INFO Manager starting.
+2014-10-20 11:22:47,611 manager INFO Starting local logging.
+2014-10-20 11:22:47,615 manager.namingmanager INFO NameServer connection succeeded: corba/localhost
+2014-10-20 11:22:49,632 ManagerServant INFO Master manager not found
+2014-10-20 11:22:49,634 manager ERROR Traceback (most recent call last):
+  File "C:\Python26\lib\site-packages\OpenRTM_aist\Manager.py", line 1751, in initManagerServant
+    reffile = file(self._config.getProperty("manager.refstring_path"),'w')
+IOError: [Errno 2] No such file or directory: '/var/log/rtcmanager.ref'
+
+2014-10-20 11:22:52,858 SdoServiceAdmin WARNING No available SDO service in the factory: 
+2014-10-20 11:22:52,858 SdoServiceAdmin ERROR type  already exists.
+2014-10-20 11:22:52,859 SdoServiceAdmin WARNING No available SDO service in the factory: IDL:OpenRTM/ComponentObserver:1.0
+2014-10-20 11:22:52,859 SdoServiceAdmin ERROR type d324a552-0955-4707-a585-5658592f2b5c already exists.
