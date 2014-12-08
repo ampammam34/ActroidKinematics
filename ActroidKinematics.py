@@ -11,6 +11,8 @@
 """
 import sys
 import time
+import numpy as np
+import math
 sys.path.append(".")
 
 # Import RTM module
@@ -53,7 +55,11 @@ class ActroidKinematics(OpenRTM_aist.DataFlowComponentBase):
 	##
 	# @brief constructor
 	# @param manager Maneger Object
-	# 
+	#
+
+
+
+
 	def __init__(self, manager):
 		OpenRTM_aist.DataFlowComponentBase.__init__(self, manager)
 
@@ -181,6 +187,8 @@ class ActroidKinematics(OpenRTM_aist.DataFlowComponentBase):
 		#
 		#
 	def onExecute(self, ec_id):
+                if self._poseinIn.isNew():
+                        data = self._poseinIn.read()
 	
 		return RTC.RTC_OK
 	
@@ -255,8 +263,24 @@ class ActroidKinematics(OpenRTM_aist.DataFlowComponentBase):
 	#
 	#	return RTC.RTC_OK
 	
+def func(x,y,z,th):
+        tranX = (x,y,z,th)
+        s = sin(th)
+        c = cos(th)
+        
+        R7 = tranX(0,0,0,th7)
+        R6 = tranX(0,0,0,th6)
+        R5 = tranX(0,0,0,th5)
+        R4 = tranX(0,0,0,th4)
+        R3 = tranX(0,0,0,th3)
+        R2 = tranX(0,0,0,th2)
+        R1 = tranX(0,0,0,th1)
 
-
+        P = np.array([[1,0,0,x],[0,c,s,y],[0,-s,c,z],[0,0,0,1]])
+        print P
+        
+        P = R1*R2*R3*R4*R5*R6*R7*Roffset*np.array([[0],[0],[1]])
+        return P
 
 def ActroidKinematicsInit(manager):
     profile = OpenRTM_aist.Properties(defaults_str=actroidkinematics_spec)
