@@ -187,10 +187,51 @@ class ActroidKinematics(OpenRTM_aist.DataFlowComponentBase):
 		#
 		#
 	def onExecute(self, ec_id):
-                if self._poseinIn.isNew():
-                        data = self._poseinIn.read()
+                try:
+                        if self._poseinIn.isNew():
+                                data = self._poseinIn.read()
+                                th1 = data.data[8]
+                                th2 = data.data[9]
+                                th3 = data.data[10]
+                                th4 = data.data[11]
+                                th5 = data.data[12]
+                                th6 = data.data[13]
+                                th7 = data.data[14]
+                                print "ok"　　# ←プリントされる
+                                
+                                def func(x,y,z,th):
+                                        tranX = (x,y,z,th)
+                                        s = sin(th)
+                                        c = cos(th)
+                        
+                                        P = np.array([[1,0,0,x],[0,c,s,y],[0,-s,c,z],[0,0,0,1]])
+
+                        
+                                        R7 = tranX(0,0,0,th7)
+                                        R6 = tranX(0,0,0,th6)
+                                        R5 = tranX(0,0,0,th5)
+                                        R4 = tranX(0,0,0,th4)
+                                        R3 = tranX(0,0,0,th3)
+                                        R2 = tranX(0,0,0,th2)
+                                        R1 = tranX(0,0,0,th1)
+                                        print "good"  # ←プリントされない
+
+                                        P = R1*R2*R3*R4*R5*R6*R7*Roffset*np.array([[0],[0],[1]])
+                                        self._d_poseout.data = P[x,y]
+                                        self._poseoutOut.write()
+                                        print self._d_poseout.data
+                                        return P   
 	
-		return RTC.RTC_OK
+                        return RTC.RTC_OK
+                
+                except Exception, e:
+                        print 'Exception : ', e
+                        traceback.print_exc()
+                        #これは print_exception(sys.exc_type, sys.exc_value, sys.exc_traceback, limit, file) の省略表現
+                        pass
+
+                return RTC.RTC_OK
+	
 	
 	#	##
 	#	#
