@@ -197,15 +197,12 @@ class ActroidKinematics(OpenRTM_aist.DataFlowComponentBase):
                                 th5 = data.data[12]
                                 th6 = data.data[13]
                                 th7 = data.data[14]
-                                print "ok"　　# ←プリントされる
+                                print th1,th2,th3,th4,th5,th6,th7
                                 
                                 def func(x,y,z,th):
-                                        tranX = (x,y,z,th)
+                                        tranX(x,y,z,th)
                                         s = sin(th)
                                         c = cos(th)
-                        
-                                        P = np.array([[1,0,0,x],[0,c,s,y],[0,-s,c,z],[0,0,0,1]])
-
                         
                                         R7 = tranX(0,0,0,th7)
                                         R6 = tranX(0,0,0,th6)
@@ -215,6 +212,8 @@ class ActroidKinematics(OpenRTM_aist.DataFlowComponentBase):
                                         R2 = tranX(0,0,0,th2)
                                         R1 = tranX(0,0,0,th1)
                                         print "good"  # ←プリントされない
+
+                                        P = np.array([[1,0,0,x],[0,c,s,y],[0,-s,c,z],[0,0,0,1]])
 
                                         P = R1*R2*R3*R4*R5*R6*R7*Roffset*np.array([[0],[0],[1]])
                                         self._d_poseout.data = P[x,y]
