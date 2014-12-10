@@ -200,20 +200,32 @@ class ActroidKinematics(OpenRTM_aist.DataFlowComponentBase):
                                 print th1,th2,th3,th4,th5,th6,th7
                                 
                                 def func(x,y,z,th):
+                                        #th[1] = data.data[8]
+                                        #th[2] = data.data[9]
+                                        #th[3] = data.data[10]
+                                        #th[4] = data.data[11]
+                                        #th[5] = data.data[12]
+                                        #th[6] = data.data[13]
+                                        #th[7] = data.data[14]
+                                        #print th[1],th[2],th[3],th[4],th[5],th[6],th[7]
+                                        
                                         tranX(x,y,z,th)
-                                        s = sin(th)
-                                        c = cos(th)
                         
-                                        R7 = tranX(0,0,0,th7)
-                                        R6 = tranX(0,0,0,th6)
-                                        R5 = tranX(0,0,0,th5)
-                                        R4 = tranX(0,0,0,th4)
-                                        R3 = tranX(0,0,0,th3)
-                                        R2 = tranX(0,0,0,th2)
-                                        R1 = tranX(0,0,0,th1)
+                                        R7 = tranX(0,0,0,th[7])
+                                        R6 = tranX(0,0,0,th[6])
+                                        R5 = tranX(0,0,0,th[5])
+                                        R4 = tranX(0,0,0,th[4])
+                                        R3 = tranX(0,0,0,th[3])
+                                        R2 = tranX(0,0,0,th[2])
+                                        R1 = tranX(0,0,0,th[1])
                                         print "good"  # ←プリントされない
 
-                                        P = np.array([[1,0,0,x],[0,c,s,y],[0,-s,c,z],[0,0,0,1]])
+                                        for i in range(24):
+                                                self._s[i] = sin(th[i])
+                                                self._c[i] = cos(th[i])
+                                                print self._s # ←プリントされない
+
+                                        P = np.array([[1,0,0,x],[0,self._c,self._s,y],[0,-self._s,self._c,z],[0,0,0,1]])
 
                                         P = R1*R2*R3*R4*R5*R6*R7*Roffset*np.array([[0],[0],[1]])
                                         self._d_poseout.data = P[x,y]
