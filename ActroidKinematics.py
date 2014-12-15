@@ -211,18 +211,9 @@ class ActroidKinematics(OpenRTM_aist.DataFlowComponentBase):
                         #if __name__ == '__main__':
                         if self._poseinIn.isNew():
                                 data = self._poseinIn.read()
-                                print data
-                                #for num in range(8, 15):
-                                #        value = data.data[num]
-                                #        th.append()
-                                th1 = data.data[8]
-                                th2 = data.data[9]
-                                th3 = data.data[10]
-                                th4 = data.data[11]
-                                th5 = data.data[12]
-                                th6 = data.data[13]
-                                th7 = data.data[14]
-                                th = [th1,th2,th3,th4,th5,th6,th7]
+                                for num in range(8, 15):
+                                        value = data.data[num]
+                                        th.append(value)
                                 l1 = 10
                                 l2 = 12
                                 l3 = 15
@@ -243,6 +234,7 @@ class ActroidKinematics(OpenRTM_aist.DataFlowComponentBase):
                                 target_T = sp.dot(T1,sp.dot(T2,sp.dot(T3,sp.dot(T4,sp.dot(T5,sp.dot(T6,sp.dot(T7,Hand)))))))
 
                                 print 'Hand Positoin is ', target_T
+                                #　最初のデータからの結果しか出ない。
     
                                 raw_input();
 	
