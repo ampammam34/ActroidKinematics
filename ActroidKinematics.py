@@ -191,26 +191,27 @@ class ActroidKinematics(OpenRTM_aist.DataFlowComponentBase):
                 th = []
                 try:
                         def rotationXandOffset(x, y, z, th):
-                            s = math.sin(th)
-                            c = math.cos(th)
-                            P = np.array([[1,0,0,x],[0,c,s,y],[0,-s,c,z],[0,0,0,1]])
-                            return P
+                                s = math.sin(th)
+                                c = math.cos(th)
+                                P = np.array([[1,0,0,x],[0,c,s,y],[0,-s,c,z],[0,0,0,1]])
+                                return P
 
                         def rotationYandOffset(x, y, z, th):
-                            s = math.sin(th)
-                            c = math.cos(th)
-                            P = np.array([[c,0,s,x],[0,1,0,y],[-s,0,c,z],[0,0,0,1]])
-                            return P
+                                s = math.sin(th)
+                                c = math.cos(th)
+                                P = np.array([[c,0,s,x],[0,1,0,y],[-s,0,c,z],[0,0,0,1]])
+                                return P
 
                         def rotationZandOffset(x, y, z, th):
-                            s = math.sin(th)
-                            c = math.cos(th)
-                            P = np.array([[c,s,0,x],[-s,c,0,y],[0,0,1,z],[0,0,0,1]])
-                            return P
+                                s = math.sin(th)
+                                c = math.cos(th)
+                                P = np.array([[c,s,0,x],[-s,c,0,y],[0,0,1,z],[0,0,0,1]])
+                                return P
 
                         #if __name__ == '__main__':
                         if self._poseinIn.isNew():
                                 data = self._poseinIn.read()
+                                print data
                                 #for num in range(8, 15):
                                 #        value = data.data[num]
                                 #        th.append()
