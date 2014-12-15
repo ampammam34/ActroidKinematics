@@ -12,6 +12,7 @@
 import sys
 import time
 import numpy as np
+import scipy as sp
 import math
 sys.path.append(".")
 
@@ -187,9 +188,32 @@ class ActroidKinematics(OpenRTM_aist.DataFlowComponentBase):
 		#
 		#
 	def onExecute(self, ec_id):
+                th = []
                 try:
+                        def rotationXandOffset(x, y, z, th):
+                            s = math.sin(th)
+                            c = math.cos(th)
+                            P = np.array([[1,0,0,x],[0,c,s,y],[0,-s,c,z],[0,0,0,1]])
+                            return P
+
+                        def rotationYandOffset(x, y, z, th):
+                            s = math.sin(th)
+                            c = math.cos(th)
+                            P = np.array([[c,0,s,x],[0,1,0,y],[-s,0,c,z],[0,0,0,1]])
+                            return P
+
+                        def rotationZandOffset(x, y, z, th):
+                            s = math.sin(th)
+                            c = math.cos(th)
+                            P = np.array([[c,s,0,x],[-s,c,0,y],[0,0,1,z],[0,0,0,1]])
+                            return P
+
+                        #if __name__ == '__main__':
                         if self._poseinIn.isNew():
                                 data = self._poseinIn.read()
+                                #for num in range(8, 15):
+                                #        value = data.data[num]
+                                #        th.append()
                                 th1 = data.data[8]
                                 th2 = data.data[9]
                                 th3 = data.data[10]
@@ -197,41 +221,29 @@ class ActroidKinematics(OpenRTM_aist.DataFlowComponentBase):
                                 th5 = data.data[12]
                                 th6 = data.data[13]
                                 th7 = data.data[14]
-                                print th1,th2,th3,th4,th5,th6,th7
-                                
-                                def func(x,y,z,th):
-                                        #th[1] = data.data[8]
-                                        #th[2] = data.data[9]
-                                        #th[3] = data.data[10]
-                                        #th[4] = data.data[11]
-                                        #th[5] = data.data[12]
-                                        #th[6] = data.data[13]
-                                        #th[7] = data.data[14]
-                                        #print th[1],th[2],th[3],th[4],th[5],th[6],th[7]
-                                        
-                                        tranX(x,y,z,th)
-                        
-                                        R7 = tranX(0,0,0,th[7])
-                                        R6 = tranX(0,0,0,th[6])
-                                        R5 = tranX(0,0,0,th[5])
-                                        R4 = tranX(0,0,0,th[4])
-                                        R3 = tranX(0,0,0,th[3])
-                                        R2 = tranX(0,0,0,th[2])
-                                        R1 = tranX(0,0,0,th[1])
-                                        print "good"  # ←プリントされない
+                                th = [th1,th2,th3,th4,th5,th6,th7]
+                                l1 = 10
+                                l2 = 12
+                                l3 = 15
+                                T = [0]*7
 
-                                        for i in range(24):
-                                                self._s[i] = sin(th[i])
-                                                self._c[i] = cos(th[i])
-                                                print self._s # ←プリントされない
+                                T1 = rotationYandOffset(0, 0, 0, th[0])  
+                                T2 = rotationXandOffset(0, 0, 0, th[1]) 
+                                T3 = rotationZandOffset(0, 0, l1, th[2])
+                                T4 = rotationYandOffset(0, 0, 0, th[3]) 
+                                T5 = rotationZandOffset(0, 0, l2, th[4]) 
+                                T6 = rotationYandOffset(0, 0, 0, th[5])  
+                                T7 = rotationXandOffset(l3, 0, 0, th[6])
+    
+                                Hand = np.array([[0],[0],[0],[1]])
 
-                                        P = np.array([[1,0,0,x],[0,self._c,self._s,y],[0,-self._s,self._c,z],[0,0,0,1]])
+                                T = [T1,T2,T3,T4,T5,T6,T7]
 
-                                        P = R1*R2*R3*R4*R5*R6*R7*Roffset*np.array([[0],[0],[1]])
-                                        self._d_poseout.data = P[x,y]
-                                        self._poseoutOut.write()
-                                        print self._d_poseout.data
-                                        return P   
+                                target_T = sp.dot(T1,sp.dot(T2,sp.dot(T3,sp.dot(T4,sp.dot(T5,sp.dot(T6,sp.dot(T7,Hand)))))))
+
+                                print 'Hand Positoin is ', target_T
+    
+                                raw_input();
 	
                         return RTC.RTC_OK
                 
@@ -314,25 +326,7 @@ class ActroidKinematics(OpenRTM_aist.DataFlowComponentBase):
 	#def onRateChanged(self, ec_id):
 	#
 	#	return RTC.RTC_OK
-	
-def func(x,y,z,th):
-        tranX = (x,y,z,th)
-        s = sin(th)
-        c = cos(th)
-        
-        R7 = tranX(0,0,0,th7)
-        R6 = tranX(0,0,0,th6)
-        R5 = tranX(0,0,0,th5)
-        R4 = tranX(0,0,0,th4)
-        R3 = tranX(0,0,0,th3)
-        R2 = tranX(0,0,0,th2)
-        R1 = tranX(0,0,0,th1)
 
-        P = np.array([[1,0,0,x],[0,c,s,y],[0,-s,c,z],[0,0,0,1]])
-        print P
-        
-        P = R1*R2*R3*R4*R5*R6*R7*Roffset*np.array([[0],[0],[1]])
-        return P
 
 def ActroidKinematicsInit(manager):
     profile = OpenRTM_aist.Properties(defaults_str=actroidkinematics_spec)
