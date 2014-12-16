@@ -236,7 +236,7 @@ class ActroidKinematics(OpenRTM_aist.DataFlowComponentBase):
                                 print 'Hand Positoin is ', target_T
                                 #　最初のデータからの結果しか出ない。
     
-                                raw_input();
+                                #raw_input(); #リターンキーを押下するまでロック
 	
                         return RTC.RTC_OK
                 
