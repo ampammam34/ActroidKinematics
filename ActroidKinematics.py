@@ -208,6 +208,7 @@ class ActroidKinematics(OpenRTM_aist.DataFlowComponentBase):
                                 P = np.array([[c,s,0,x],[-s,c,0,y],[0,0,1,z],[0,0,0,1]])
                                 return P
 
+
                         #if __name__ == '__main__':
                         if self._poseinIn.isNew():
                                 data = self._poseinIn.read()
