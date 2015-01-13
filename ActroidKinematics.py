@@ -68,7 +68,7 @@ class ActroidKinematics(OpenRTM_aist.DataFlowComponentBase):
 		"""
 		"""
 		self._poseinIn = OpenRTM_aist.InPort("posein", self._d_posein)
-		self._d_poseout = RTC.TimedDoubleSeq(RTC.Time(0,0),[])
+		self._d_poseout = RTC.TimedPose3D(RTC.Time(0,0),0)
 		"""
 		"""
 		self._poseoutOut = OpenRTM_aist.OutPort("poseout", self._d_poseout)
